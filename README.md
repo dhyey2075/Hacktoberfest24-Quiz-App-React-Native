@@ -1,4 +1,3 @@
-# Hacktoberfest24-Quiz-App-React-Native
 # Quiz App
 
 A simple Quiz App that allows users to take quizzes on various topics and displays results in a user-friendly interface.
