@@ -12,6 +12,8 @@ const HomeScreen = ({ navigation }) => {
 
     // Handle category selection
     const handleCategoryPress = (category) => {
+        // navigating to question page
+        navigation.navigate('Question', {category });
         // Navigation logic can be implemented later
         console.log('Selected category:', category.name);
     };
