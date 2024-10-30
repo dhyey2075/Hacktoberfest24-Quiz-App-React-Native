@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const QuestionScreen = ({ route }) => {
-    
+
     // Get the category from the route parameters
     const { category } = route.params;
 
-    
+
     const sampleQuestions = [
         {
             question: 'What is the capital of France?',
@@ -44,7 +45,7 @@ const QuestionScreen = ({ route }) => {
 
     const [questionIndex, setQuestionIndex] = useState(0);
     const sampleQuestion = sampleQuestions[questionIndex];
-    
+
     // State to track selected answer and correct/wrong status
     const [selectedOption, setSelectedOption] = useState(null);
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
@@ -70,66 +71,72 @@ const QuestionScreen = ({ route }) => {
         }
     };
 
+    const handleBackPress = () => {
+        questionIndex > 0 ? setQuestionIndex(questionIndex - 1) : console.log('No more questions');
+    }
+
 
     return (
-        <View style={styles.container} key={questionIndex}>
-            {/* Category and Difficulty level on top left */}
-            <View style={styles.topBar}>
-                <Text style={styles.difficultyText}>Difficulty: {sampleQuestion.difficulty}</Text>
-            </View>
+            <View style={styles.container} key={questionIndex}>
+                {/* Category and Difficulty level on top left */}
+                <View style={styles.topBar}>
+                    <FontAwesome name='arrow-left' size={25} style={{marginBottom: 10}} onPress={handleBackPress}/>
 
-            {/* Question in the center */}
-            <View style={styles.questionContainer}>
-                <Text style={styles.questionText}>{sampleQuestion.question}</Text>
-            </View>
-
-            {/* Options */}
-            <View style={styles.optionsContainer}>
-                {sampleQuestion.options.map((option) => {
-                    const isSelected = selectedOption === option.id;
-                    const isCorrect = isAnswerCorrect !== null && option.isCorrect;
-                    const showCorrect = isAnswerCorrect !== null && option.isCorrect;
-
-                    return (
-                        <TouchableOpacity
-                            key={option.id}
-                            style={[
-                                styles.optionButton,
-                                isSelected && (isCorrect ? styles.correctAnswer : styles.wrongAnswer),
-                                showCorrect && styles.correctAnswer
-                            ]}
-                            onPress={() => handleOptionPress(option)}
-                            disabled={isAnswerCorrect !== null} 
-                        >   
-                            <Text style={styles.optionText}>{option.text}</Text>
-                            {isSelected && isCorrect && (
-                                <MaterialIcons name="check-circle" size={24} color="green" />
-                            )}
-                            {isSelected && !isCorrect && (
-                                <MaterialIcons name="cancel" size={24} color="red" />
-                            )}
-                            {showCorrect && (
-                                <Text style={styles.correctAnswerText}>Correct Answer!</Text>
-                            )}
-                        </TouchableOpacity>
-                    );
-                })}
-            </View>
-
-            {/* Display message for correct answer */}
-            {isAnswerCorrect && (
-                <Text style={styles.goodJobText}>Good Job!</Text>
-            )}
-
-            {/* Display Next Question button if an answer is selected */}
-            {isAnswerCorrect !== null && (
-                <View style={styles.nextButtonContainer}>
-                    <TouchableOpacity style={styles.nextButton} onPress={handleNextQuestion}>
-                        <Text style={styles.nextButtonText}>Next</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.difficultyText}>Difficulty: {sampleQuestion.difficulty}</Text>
                 </View>
-            )}
-        </View>
+
+                {/* Question in the center */}
+                <View style={styles.questionContainer}>
+                    <Text style={styles.questionText}>{sampleQuestion.question}</Text>
+                </View>
+
+                {/* Options */}
+                <View style={styles.optionsContainer}>
+                    {sampleQuestion.options.map((option) => {
+                        const isSelected = selectedOption === option.id;
+                        const isCorrect = isAnswerCorrect !== null && option.isCorrect;
+                        const showCorrect = isAnswerCorrect !== null && option.isCorrect;
+
+                        return (
+                            <TouchableOpacity
+                                key={option.id}
+                                style={[
+                                    styles.optionButton,
+                                    isSelected && (isCorrect ? styles.correctAnswer : styles.wrongAnswer),
+                                    showCorrect && styles.correctAnswer
+                                ]}
+                                onPress={() => handleOptionPress(option)}
+                                disabled={isAnswerCorrect !== null}
+                            >
+                                <Text style={styles.optionText}>{option.text}</Text>
+                                {isSelected && isCorrect && (
+                                    <MaterialIcons name="check-circle" size={24} color="green" />
+                                )}
+                                {isSelected && !isCorrect && (
+                                    <MaterialIcons name="cancel" size={24} color="red" />
+                                )}
+                                {showCorrect && (
+                                    <Text style={styles.correctAnswerText}>Correct Answer!</Text>
+                                )}
+                            </TouchableOpacity>
+                        );
+                    })}
+                </View>
+
+                {/* Display message for correct answer */}
+                {isAnswerCorrect && (
+                    <Text style={styles.goodJobText}>Good Job!</Text>
+                )}
+
+                {/* Display Next Question button if an answer is selected */}
+                {isAnswerCorrect !== null && (
+                    <View style={styles.nextButtonContainer}>
+                        <TouchableOpacity style={styles.nextButton} onPress={handleNextQuestion}>
+                            <Text style={styles.nextButtonText}>Next</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+            </View>
     );
 };
 
@@ -205,7 +212,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     nextButton: {
-        width: 100, 
+        width: 100,
         backgroundColor: '#007bff',
         padding: 15,
         borderRadius: 5,

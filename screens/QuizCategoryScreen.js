@@ -21,7 +21,6 @@ export default function QuizCategoryScreen() {
                 const data = await response.json();
                 
                 // Log the structure to ensure we are setting `categories` correctly
-                console.log("Fetched data:", data);
 
                 // Assuming `data` is the array we need
                 if (Array.isArray(data.triviaCategories)) {
