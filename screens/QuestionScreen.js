@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const QuestionScreen = ({ route }) => {
     
@@ -48,9 +49,11 @@ const QuestionScreen = ({ route }) => {
     // State to track selected answer and correct/wrong status
     const [selectedOption, setSelectedOption] = useState(null);
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
+    const [selectedOptionList, setSelectedOptionList] = useState([]);
 
     const handleOptionPress = (option) => {
         setSelectedOption(option.id);
+        setSelectedOptionList([...selectedOptionList, option.id]);
         setIsAnswerCorrect(option.isCorrect);
     };
 
@@ -69,12 +72,20 @@ const QuestionScreen = ({ route }) => {
             setIsAnswerCorrect(null);
         }
     };
+    const handleBackPress = () => {
+        if (questionIndex > 0) {
+            setQuestionIndex(prevIndex => prevIndex - 1);
+            setSelectedOption(selectedOptionList[questionIndex - 1]);
+            setIsAnswerCorrect(null);
+        }
+    }
 
 
     return (
         <View style={styles.container} key={questionIndex}>
             {/* Category and Difficulty level on top left */}
             <View style={styles.topBar}>
+                <FontAwesome name='arrow-left' size={25} style={{marginBottom: 10}} onPress={handleBackPress} />
                 <Text style={styles.difficultyText}>Difficulty: {sampleQuestion.difficulty}</Text>
             </View>
 
